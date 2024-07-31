@@ -94,6 +94,8 @@ export const Counter = styled.div`
     background: transparent;
     border: none;
     color: ${(props) => props.theme['purple-500']};
+
+    cursor: pointer;
   }
 `
 
@@ -110,4 +112,6 @@ export const ButtonCart = styled.button`
   background-color: ${(props) => props.theme['purple-900']};
   color: ${(props) => props.theme['gray-200']};
   border-radius: 6px;
+
+  cursor: pointer;
 `
