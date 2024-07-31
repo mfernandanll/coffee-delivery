@@ -78,7 +78,6 @@ export const Price = styled.div`
   }
 `
 
-
 export const Counter = styled.div`
   margin-left: 1.438rem;
   padding: 0.75rem 0.5rem;
