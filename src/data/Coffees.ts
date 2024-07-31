@@ -1,4 +1,3 @@
-
 import coffee from "../assets/Coffee.png"
 import coffee1 from "../assets/Coffee (1).png"
 import coffee2 from "../assets/Coffee (2).png"
@@ -13,8 +12,6 @@ import coffee10 from "../assets/Coffee (10).png"
 import coffee11 from "../assets/Coffee (11).png"
 import coffee12 from "../assets/Coffee (12).png"
 import coffee13 from "../assets/Coffee (13).png"
-import { createContext, ReactNode } from "react"
-
 
 export interface Coffee {
   id: string;
@@ -25,7 +22,7 @@ export interface Coffee {
   imgPath: string;
 }
 
-const coffees: Coffee[] = [
+export const coffees: Coffee[] = [
   {
     id: '1',
     name: 'Expresso Tradicional',
@@ -139,25 +136,3 @@ const coffees: Coffee[] = [
     imgPath: coffee13
   },
 ]
-
-interface CoffeeContextType {
-  coffees: Coffee[]
-}
-
-export const CoffeeContext = createContext({} as CoffeeContextType)
-
-interface CoffeeContextProviderProps {
-  children: ReactNode;
-}
-
-export function CoffeeContextProvider({ children }: CoffeeContextProviderProps){
-  return (
-    <CoffeeContext.Provider
-      value={{
-        coffees
-      }}
-    >
-      {children}
-    </CoffeeContext.Provider>
-  )
-}

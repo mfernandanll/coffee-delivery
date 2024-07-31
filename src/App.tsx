@@ -5,16 +5,16 @@ import { Router } from './Router'
 
 import { GlobalStyle } from './styles/global'
 import { defaultTheme } from './styles/themes/default'
-import { CoffeeContextProvider } from './contexts/CoffeeContext'
+import { ShoppingCartListContextProvider } from './contexts/ShoppingCartListContext'
 
 
 export function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
-        <CoffeeContextProvider>
+        <ShoppingCartListContextProvider>
           <Router/>
-        </CoffeeContextProvider>
+        </ShoppingCartListContextProvider>
       </BrowserRouter>
       <GlobalStyle />
     </ThemeProvider>
