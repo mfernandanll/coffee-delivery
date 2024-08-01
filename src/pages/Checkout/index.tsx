@@ -1,5 +1,4 @@
-import { Bank, CreditCard, CurrencyDollar, MapPinLine, Money} from "@phosphor-icons/react";
-import coffee from "../../assets/Coffee.png"
+import { Bank, CreditCard, CurrencyDollar, MapPinLine, Money } from "@phosphor-icons/react";
 import { AddressContainer, AddressThreeCollums, AddressTwoCollums, CheckoutContainer, Form, InputWrapper, PaymentContainer, PaymentOption, PaymentOptions, Price, ShopCartContainer, Title, TotalContainer, HeaderTitle, HeaderSubTitle } from "./styles";
 import { useContext } from "react";
 import { ShoppingCartListContext } from "../../contexts/ShoppingCartListContext";
@@ -7,6 +6,17 @@ import { ShoppingCartCard } from "./ShoppingCartListCard";
 
 export function Checkout() {
   const { shoppingCartList } = useContext(ShoppingCartListContext);
+
+  const formatPrice = (price: number) => price.toFixed(2).replace('.', ',');
+
+  const totalProductsPrice = shoppingCartList.reduce((total, item) => total + (item.price * item.quantity), 0);
+  const totalProductsPriceFormatted = formatPrice(totalProductsPrice);
+
+  const delivery = 9.9;
+  const deliveryFormatted = formatPrice(delivery);
+
+  const totalPrice = totalProductsPrice + delivery;
+  const totalPriceFormatted = formatPrice(totalPrice);
 
   return (
     <CheckoutContainer>
@@ -23,40 +33,40 @@ export function Checkout() {
 
           <Form>
             <InputWrapper>
-              <label htmlFor="cep"/>
+              <label htmlFor="cep" />
               <input type="text" id="cep" placeholder="CEP" />
             </InputWrapper>
 
             <InputWrapper>
-              <label htmlFor="street"/>
+              <label htmlFor="street" />
               <input type="text" id="street" placeholder="Rua" />
             </InputWrapper>
 
             <AddressTwoCollums>
               <InputWrapper>
-                <label htmlFor="number"/>
+                <label htmlFor="number" />
                 <input type="text" id="number" placeholder="Número" />
               </InputWrapper>
 
               <InputWrapper>
-                <label htmlFor="complement"/>
+                <label htmlFor="complement" />
                 <input type="text" id="complement" placeholder="Complemento" />
               </InputWrapper>
             </AddressTwoCollums>
 
             <AddressThreeCollums>
               <InputWrapper>
-                <label htmlFor="neighborhood"/>
+                <label htmlFor="neighborhood" />
                 <input type="text" id="nuneighborhoodmber" placeholder="Bairro" />
               </InputWrapper>
 
               <InputWrapper>
-                <label htmlFor="city"/>
+                <label htmlFor="city" />
                 <input type="text" id="city" placeholder="Cidade" />
               </InputWrapper>
 
               <InputWrapper>
-                <label htmlFor="state"/>
+                <label htmlFor="state" />
                 <input type="text" id="state" placeholder="UF" />
               </InputWrapper>
             </AddressThreeCollums>
@@ -72,7 +82,7 @@ export function Checkout() {
             </div>
           </header>
           <PaymentOptions>
-            <PaymentOption 
+            <PaymentOption
               value="credit"
               selected={true}
             >
@@ -80,7 +90,7 @@ export function Checkout() {
               <span>Cartão de crédito</span>
             </PaymentOption>
 
-            <PaymentOption 
+            <PaymentOption
               value="debit"
               selected={false}
             >
@@ -88,7 +98,7 @@ export function Checkout() {
               <span>Cartão de débito</span>
             </PaymentOption>
 
-            <PaymentOption 
+            <PaymentOption
               value="money"
               selected={false}
             >
@@ -107,7 +117,7 @@ export function Checkout() {
             shoppingCartList.length > 0 &&
 
             shoppingCartList.map(item => (
-              <ShoppingCartCard key={item.id} cartItem={item}/>
+              <ShoppingCartCard key={item.id} cartItem={item} />
             ))
           }
 
@@ -116,7 +126,7 @@ export function Checkout() {
               <span>Total de itens</span>
               <Price>
                 <span>R$</span>
-                <span>9,90</span>
+                <span>{totalProductsPriceFormatted}</span>
               </Price>
             </div>
 
@@ -124,7 +134,7 @@ export function Checkout() {
               <span>Entrega</span>
               <Price>
                 <span>R$</span>
-                <span>9,90</span>
+                <span>{shoppingCartList.length > 0 ? deliveryFormatted : '0.00'}</span>
               </Price>
             </div>
 
@@ -132,7 +142,7 @@ export function Checkout() {
               <span>Total</span>
               <div>
                 <span>R$</span>
-                <span>9,90</span>
+                <span>{shoppingCartList.length > 0 ? totalPriceFormatted : '0.00'}</span>
               </div>
             </div>
 
