@@ -17,6 +17,7 @@ export interface Coffee {
   id: string;
   name: string;
   description: string;
+  quantity: number;
   price: number;
   tags: string[];
   imgPath: string;
@@ -28,6 +29,7 @@ export const coffees: Coffee[] = [
     name: 'Expresso Tradicional',
     description: 'O tradicional café feito com água quente e grãos moídos',
     price: 9.90,
+    quantity: 0,
     tags: ['tradicional'],
     imgPath: coffee
   },
@@ -36,6 +38,7 @@ export const coffees: Coffee[] = [
     name: 'Expresso Americano',
     description: 'Expresso diluído, menos intenso que o tradicional',
     price: 9.90,
+    quantity: 0,
     tags: ['tradicional'],
     imgPath: coffee1
   },
@@ -44,6 +47,7 @@ export const coffees: Coffee[] = [
     name: 'Expresso Cremoso',
     description: 'Café expresso tradicional com espuma cremosa',
     price: 9.90,
+    quantity: 0,
     tags: ['tradicional'],
     imgPath: coffee2
   },
@@ -52,6 +56,7 @@ export const coffees: Coffee[] = [
     name: 'Expresso Gelado',
     description: 'Bebida preparada com café expresso e cubos de gelo',
     price: 9.90,
+    quantity: 0,
     tags: ['tradicional', 'gelado'],
     imgPath: coffee3
   },
@@ -60,6 +65,7 @@ export const coffees: Coffee[] = [
     name: 'Café com Leite',
     description: 'Meio a meio de expresso tradicional com leite vaporizado',
     price: 9.90,
+    quantity: 0,
     tags: ['tradicional', 'com leite'],
     imgPath: coffee4
   },
@@ -68,6 +74,7 @@ export const coffees: Coffee[] = [
     name: 'Latte',
     description: 'Uma dose de café expresso com o dobro de leite e espuma cremosa',
     price: 9.90,
+    quantity: 0,
     tags: ['tradicional', 'com leite'],
     imgPath: coffee5
   },
@@ -76,6 +83,7 @@ export const coffees: Coffee[] = [
     name: 'Capuccino',
     description: 'Bebida com canela feita de doses iguais de café, leite e espuma',
     price: 9.90,
+    quantity: 0,
     tags: ['tradicional', 'com leite'],
     imgPath: coffee6
   },
@@ -84,6 +92,7 @@ export const coffees: Coffee[] = [
     name: 'Macchiato',
     description: 'Café expresso misturado com um pouco de leite quente e espuma',
     price: 9.90,
+    quantity: 0,
     tags: ['tradicional', 'com leite'],
     imgPath: coffee7
   },
@@ -92,6 +101,7 @@ export const coffees: Coffee[] = [
     name: 'Macchiato 2',
     description: 'Café expresso com calda de chocolate, pouco leite e espuma',
     price: 9.90,
+    quantity: 0,
     tags: ['tradicional', 'com leite'],
     imgPath: coffee8
   },
@@ -100,6 +110,7 @@ export const coffees: Coffee[] = [
     name: 'Chocolate Quente',
     description: 'Bebida feita com chocolate dissolvido no leite quente e café',
     price: 9.90,
+    quantity: 0,
     tags: ['tradicional', 'com leite'],
     imgPath: coffee9
   },
@@ -108,6 +119,7 @@ export const coffees: Coffee[] = [
     name: 'Cubano',
     description: 'Drink gelado de café expresso com rum, creme de leite e hortelã',
     price: 9.90,
+    quantity: 0,
     tags: ['especial', 'alcoolico', 'gelado'],
     imgPath: coffee10
   },
@@ -116,6 +128,7 @@ export const coffees: Coffee[] = [
     name: 'Havaiano',
     description: 'Bebida adocicada preparada com café e leite de coco',
     price: 9.90,
+    quantity: 0,
     tags: ['especial'],
     imgPath: coffee11
   },
@@ -124,6 +137,7 @@ export const coffees: Coffee[] = [
     name: 'Árabe',
     description: 'Bebida preparada com grãos de café árabe e especiarias',
     price: 9.90,
+    quantity: 0,
     tags: ['especial'],
     imgPath: coffee12
   },
@@ -132,6 +146,7 @@ export const coffees: Coffee[] = [
     name: 'Irlandês',
     description: 'Bebida a base de café, uísque irlandês, açúcar e chantilly',
     price: 9.90,
+    quantity: 0,
     tags: ['especial', 'alcoolico'],
     imgPath: coffee13
   },

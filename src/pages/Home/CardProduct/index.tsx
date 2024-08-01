@@ -1,13 +1,25 @@
 import { Minus, Plus, ShoppingCart } from "@phosphor-icons/react";
-import { Coffee } from "..";
+// import { Coffee } from "..";
 import { ButtonCart, CardContainer, Counter, Price, ShopCartContainer, Tag, Tags } from "./styles";
+import { Coffee } from "../../../data/Coffees";
+import { useContext } from "react";
+import { ShoppingCartListContext } from "../../../contexts/ShoppingCartListContext";
 
 interface CardProductProps {
   coffee: Coffee;
 }
 
 export function CardProduct({ coffee }: CardProductProps){  
+  const { addCoffee, shoppingCartList } = useContext(ShoppingCartListContext);
+
   const formattedPrice = coffee.price.toFixed(2).replace('.', ',');
+
+  const itemOnList = shoppingCartList.find(item => item.id === coffee.id);
+  const quantityToShow = itemOnList ? itemOnList.quantity : coffee.quantity;
+
+  function handleAddCoffee(){
+    addCoffee(coffee)
+  }
 
   return (
     <CardContainer>
@@ -32,8 +44,10 @@ export function CardProduct({ coffee }: CardProductProps){
           <button>
             <Minus size={14} weight="bold"/>
           </button>
-          <span>1</span>
-          <button>
+          <span>{quantityToShow}</span>
+          <button
+            onClick={handleAddCoffee}
+          >
             <Plus size={14} weight="bold"/>
           </button>
         </Counter>

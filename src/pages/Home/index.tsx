@@ -6,7 +6,12 @@ import { useContext } from "react";
 import { ShoppingCartListContext } from "../../contexts/ShoppingCartListContext";
 
 export function Home() {
-  const { coffees } = useContext(ShoppingCartListContext);
+  const { coffees, shoppingCartList } = useContext(ShoppingCartListContext);
+
+  
+  console.log(shoppingCartList);
+  
+
 
   return (
     <HomeContainer>
