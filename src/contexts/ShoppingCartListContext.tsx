@@ -7,6 +7,7 @@ interface ShoppingCartListContextType {
   coffees: Coffee[];
   shoppingCartList: Coffee[];
   addCoffee: (coffee: Coffee) => void;
+  removeCoffeeFromList: (coffeeId: string) => void;
 }
 
 export const ShoppingCartListContext = createContext({} as ShoppingCartListContextType)
@@ -32,12 +33,26 @@ export function ShoppingCartListContextProvider({ children }: ShoppingCartListCo
     });
   }
 
+  function removeCoffeeFromList(coffeeId: string) {
+    setShoppingCartList((prevState) => {
+      const itemInCart = prevState.find(item => item.id === coffeeId);
+
+      if (itemInCart) {
+        const filteresList = prevState.filter(item => item.id !== coffeeId);
+        return filteresList
+      } else {
+        return prevState
+      }
+    })
+  }
+
   return (
     <ShoppingCartListContext.Provider
       value={{
         coffees,
         shoppingCartList,
-        addCoffee
+        addCoffee,
+        removeCoffeeFromList
       }}
     >
       {children}

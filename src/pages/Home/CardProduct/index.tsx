@@ -17,7 +17,7 @@ export function CardProduct({ coffee }: CardProductProps){
   const itemOnList = shoppingCartList.find(item => item.id === coffee.id);
   const quantityToShow = itemOnList ? itemOnList.quantity : coffee.quantity;
 
-  function handleAddCoffee(){
+  function handleAddCoffeeToList(){
     addCoffee(coffee)
   }
 
@@ -46,7 +46,7 @@ export function CardProduct({ coffee }: CardProductProps){
           </button>
           <span>{quantityToShow}</span>
           <button
-            onClick={handleAddCoffee}
+            onClick={handleAddCoffeeToList}
           >
             <Plus size={14} weight="bold"/>
           </button>
