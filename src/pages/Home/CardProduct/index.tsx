@@ -4,6 +4,7 @@ import { ButtonCart, CardContainer, Counter, Price, ShopCartContainer, Tag, Tags
 import { Coffee } from "../../../data/Coffees";
 import { useContext } from "react";
 import { ShoppingCartListContext } from "../../../contexts/ShoppingCartListContext";
+import { NavLink } from "react-router-dom";
 
 interface CardProductProps {
   coffee: Coffee;
@@ -61,9 +62,11 @@ export function CardProduct({ coffee }: CardProductProps){
           </button>
         </Counter>
 
-        <ButtonCart>
-          <ShoppingCart size={18} weight="fill"/>
-        </ButtonCart>
+        <NavLink to="/checkout" title="Checkout">
+          <ButtonCart>
+            <ShoppingCart size={18} weight="fill"/>
+          </ButtonCart>
+        </NavLink>
       </ShopCartContainer>
     </CardContainer>
   )

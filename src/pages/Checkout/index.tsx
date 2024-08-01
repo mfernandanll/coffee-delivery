@@ -1,8 +1,13 @@
-import { Bank, CreditCard, CurrencyDollar, MapPinLine, Minus, Money, Plus, Trash } from "@phosphor-icons/react";
+import { Bank, CreditCard, CurrencyDollar, MapPinLine, Money} from "@phosphor-icons/react";
 import coffee from "../../assets/Coffee.png"
-import { AddressContainer, AddressThreeCollums, AddressTwoCollums, CardContent, CheckoutContainer, CardProduct, Counter, Form, InputWrapper, PaymentContainer, PaymentOption, PaymentOptions, Price,  RemoveButton, ShopCartContainer, Title, TotalContainer, HeaderTitle, HeaderSubTitle, ProductPrice } from "./styles";
+import { AddressContainer, AddressThreeCollums, AddressTwoCollums, CheckoutContainer, Form, InputWrapper, PaymentContainer, PaymentOption, PaymentOptions, Price, ShopCartContainer, Title, TotalContainer, HeaderTitle, HeaderSubTitle } from "./styles";
+import { useContext } from "react";
+import { ShoppingCartListContext } from "../../contexts/ShoppingCartListContext";
+import { ShoppingCartCard } from "./ShoppingCartListCard";
 
 export function Checkout() {
+  const { shoppingCartList } = useContext(ShoppingCartListContext);
+
   return (
     <CheckoutContainer>
       <div>
@@ -98,37 +103,14 @@ export function Checkout() {
         <Title>Cafés selecionados</Title>
 
         <ShopCartContainer>
-          <CardProduct>
-            <img src={coffee} alt="Expresso Tradicional" />
-            
-            <CardContent>
-              <span>Expresso Tradicional</span>
+          {
+            shoppingCartList.length > 0 &&
 
-              <div>
-                <Counter>
-                  <button>
-                    <Minus size={14} weight="bold" />
-                  </button>
-                  <span>1</span>
-                  <button>
-                    <Plus size={14} weight="bold" />
-                  </button>
-                </Counter>
+            shoppingCartList.map(item => (
+              <ShoppingCartCard key={item.id} cartItem={item}/>
+            ))
+          }
 
-                <RemoveButton>
-                  <Trash size={16} />
-                  <span>Remover</span>
-                </RemoveButton>
-              </div>
-
-            </CardContent>
-            
-            <ProductPrice>
-              <span>R$</span>
-              <span>9,90</span>
-            </ProductPrice>
-          </CardProduct>
-          
           <TotalContainer>
             <div>
               <span>Total de itens</span>

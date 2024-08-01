@@ -114,4 +114,7 @@ export const ButtonCart = styled.button`
   border-radius: 6px;
 
   cursor: pointer;
+
+  display: grid;
+  place-items: center;
 `
