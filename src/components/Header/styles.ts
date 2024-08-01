@@ -44,4 +44,27 @@ export const ButtonLocation = styled(BaseButton)`
 export const CartButton = styled(BaseButton)`
   background-color: ${(props) => props.theme['yellow-100']};
   color: ${(props) => props.theme['yellow-900']};
+
+  position: relative;
+
+  div {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 100px;
+
+    background-color: ${(props) => props.theme['yellow-900']};
+    
+    display: grid;
+    place-content: center;
+  }
+
+  span {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: ${(props) => props.theme['white']};
+  }
 `

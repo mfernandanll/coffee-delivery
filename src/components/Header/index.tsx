@@ -2,8 +2,14 @@ import { ButtonLocation, Buttons, CartButton, HeaderContainer, HeaderContent } f
 
 import logo from "../../assets/logo.png";
 import { MapPin, ShoppingCart } from "@phosphor-icons/react";
+import { useContext } from "react";
+import { ShoppingCartListContext } from "../../contexts/ShoppingCartListContext";
 
 export function Header() {
+  const { shoppingCartList } = useContext(ShoppingCartListContext);
+
+  const totalProducts = shoppingCartList.reduce((total, item) => total + item.quantity, 0);
+
   return (
     <HeaderContainer>
       <HeaderContent>
@@ -16,6 +22,7 @@ export function Header() {
           </ButtonLocation>
           <CartButton>
             <ShoppingCart size={22} weight="fill" />
+            <div><span>{totalProducts}</span></div>
           </CartButton>
         </Buttons>
       </HeaderContent>
