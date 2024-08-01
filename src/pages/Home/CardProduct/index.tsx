@@ -10,15 +10,22 @@ interface CardProductProps {
 }
 
 export function CardProduct({ coffee }: CardProductProps){  
-  const { addCoffee, shoppingCartList } = useContext(ShoppingCartListContext);
+  const {
+    shoppingCartList,
+    increaseCoffeeQuantityInTheList,
+    descreaseCoffeeQuantityFromList } = useContext(ShoppingCartListContext);
 
   const formattedPrice = coffee.price.toFixed(2).replace('.', ',');
 
   const itemOnList = shoppingCartList.find(item => item.id === coffee.id);
   const quantityToShow = itemOnList ? itemOnList.quantity : coffee.quantity;
 
-  function handleAddCoffeeToList(){
-    addCoffee(coffee)
+  function handleIncreaseCoffeeQuantity(){
+    increaseCoffeeQuantityInTheList(coffee)
+  }
+
+  function handleDecreaseCoffeeQuantity() {
+    descreaseCoffeeQuantityFromList(coffee.id)
   }
 
   return (
@@ -41,12 +48,14 @@ export function CardProduct({ coffee }: CardProductProps){
         </Price>
 
         <Counter>
-          <button>
+          <button
+            onClick={handleDecreaseCoffeeQuantity}
+          >
             <Minus size={14} weight="bold"/>
           </button>
           <span>{quantityToShow}</span>
           <button
-            onClick={handleAddCoffeeToList}
+            onClick={handleIncreaseCoffeeQuantity}
           >
             <Plus size={14} weight="bold"/>
           </button>

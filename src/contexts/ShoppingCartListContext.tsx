@@ -6,8 +6,8 @@ import { Coffee, coffees } from "../data/Coffees";
 interface ShoppingCartListContextType {
   coffees: Coffee[];
   shoppingCartList: Coffee[];
-  addCoffee: (coffee: Coffee) => void;
-  removeCoffeeFromList: (coffeeId: string) => void;
+  increaseCoffeeQuantityInTheList: (coffee: Coffee) => void;
+  descreaseCoffeeQuantityFromList: (coffeeId: string) => void;
 }
 
 export const ShoppingCartListContext = createContext({} as ShoppingCartListContextType)
@@ -19,7 +19,7 @@ interface ShoppingCartListContextProviderProps {
 export function ShoppingCartListContextProvider({ children }: ShoppingCartListContextProviderProps){
   const [shoppingCartList, setShoppingCartList] = useState<Coffee[]>([]);
   
-  function addCoffee(coffee: Coffee){
+  function increaseCoffeeQuantityInTheList(coffee: Coffee){
     setShoppingCartList((prevState) => {
       const itemInCart = prevState.find(item => item.id === coffee.id);
   
@@ -33,17 +33,25 @@ export function ShoppingCartListContextProvider({ children }: ShoppingCartListCo
     });
   }
 
-  function removeCoffeeFromList(coffeeId: string) {
+  function descreaseCoffeeQuantityFromList(coffeeId: string) {
     setShoppingCartList((prevState) => {
       const itemInCart = prevState.find(item => item.id === coffeeId);
 
-      if (itemInCart) {
-        const filteresList = prevState.filter(item => item.id !== coffeeId);
-        return filteresList
+      if (itemInCart && itemInCart.quantity > 1) {
+        return prevState.map(item =>
+          item.id === coffeeId ? { ...item, quantity: item.quantity - 1 } : item
+        );
+      } else if (itemInCart && itemInCart.quantity == 1) {
+        return removeCoffeeFromList(prevState, coffeeId)
       } else {
         return prevState
       }
     })
+  }
+
+  function removeCoffeeFromList(coffeelist: Coffee[], coffeeId: string){
+    const filteresList = coffeelist.filter(item => item.id !== coffeeId);
+    return filteresList
   }
 
   return (
@@ -51,8 +59,8 @@ export function ShoppingCartListContextProvider({ children }: ShoppingCartListCo
       value={{
         coffees,
         shoppingCartList,
-        addCoffee,
-        removeCoffeeFromList
+        increaseCoffeeQuantityInTheList,
+        descreaseCoffeeQuantityFromList
       }}
     >
       {children}
