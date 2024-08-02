@@ -1,6 +1,7 @@
 
 import { createContext, ReactNode, useState } from "react"
 import { Coffee, coffees } from "../data/Coffees";
+import { ShoppingFormData } from "../pages/Checkout";
 
 
 interface ShoppingCartListContextType {
@@ -9,12 +10,28 @@ interface ShoppingCartListContextType {
   increaseCoffeeQuantityInTheList: (coffee: Coffee) => void;
   descreaseCoffeeQuantityFromList: (coffeeId: string) => void;
   removeCoffeeFromList: (coffeeId: string) => void;
+  createNewOrder: (data: ShoppingFormData) => void;
 }
 
 export const ShoppingCartListContext = createContext({} as ShoppingCartListContextType)
 
 interface ShoppingCartListContextProviderProps {
   children: ReactNode;
+}
+
+interface Order {
+  id: string;
+  cep: string;
+  street: string;
+  addressNumber: string;
+  complement?: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  paymentMethod: 'money' | 'credit' | 'debit';
+  orders: Coffee[];
+  delivery: number;
+  totalPrice: number;
 }
 
 export function ShoppingCartListContextProvider({ children }: ShoppingCartListContextProviderProps){
@@ -58,6 +75,29 @@ export function ShoppingCartListContextProvider({ children }: ShoppingCartListCo
     })
   }
 
+  function createNewOrder(data: ShoppingFormData) {
+    const id = String(new Date().getTime())
+
+    const newOrder: Order = {
+      id,
+      cep: data.cep,
+      street: data.street,
+      addressNumber: data.addressNumber,
+      complement: data.complement,
+      neighborhood: data.neighborhood,
+      city: data.city,
+      state: data.state,
+      paymentMethod: data.paymentMethod,
+      orders: data.orders,
+      delivery: data.delivery,
+      totalPrice: data.totalPrice
+    }
+
+    console.log(newOrder);
+    
+
+  }
+
   return (
     <ShoppingCartListContext.Provider
       value={{
@@ -65,7 +105,8 @@ export function ShoppingCartListContextProvider({ children }: ShoppingCartListCo
         shoppingCartList,
         increaseCoffeeQuantityInTheList,
         descreaseCoffeeQuantityFromList,
-        removeCoffeeFromList
+        removeCoffeeFromList,
+        createNewOrder
       }}
     >
       {children}

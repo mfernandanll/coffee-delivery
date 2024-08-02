@@ -4,8 +4,13 @@ export const CheckoutContainer = styled.section`
   margin: 2.5rem auto;
   max-width: 70rem;
 
-  display: flex;
-  gap: 2rem;
+  /* display: flex;
+  gap: 2rem; */
+
+  form {
+    display: flex;
+    gap: 2rem;
+  }
 `
 
 export const Title = styled.h3`
@@ -54,7 +59,7 @@ export const HeaderSubTitle = styled.p`
   color: ${(props) => props.theme['gray-700']};
 `
 
-export const Form = styled.form`
+export const Form = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
