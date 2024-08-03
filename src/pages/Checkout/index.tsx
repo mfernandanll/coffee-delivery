@@ -1,5 +1,5 @@
-import { Bank,  CreditCard, CurrencyDollar, MapPinLine, Money } from "@phosphor-icons/react";
-import { AddressContainer, AddressThreeCollums, AddressTwoCollums, CheckoutContainer, Form, InputWrapper, PaymentContainer, PaymentOption, PaymentOptions, Price, ShopCartContainer, Title, TotalContainer, HeaderTitle, HeaderSubTitle } from "./styles";
+import { Bank, CreditCard, CurrencyDollar, MapPinLine, Money } from "@phosphor-icons/react";
+import { AddressContainer, AddressThreeCollums, AddressTwoCollums, CheckoutContainer, Form, InputWrapper, PaymentContainer, PaymentOption, PaymentOptions, Price, ShopCartContainer, Title, TotalContainer, HeaderTitle, HeaderSubTitle, ErrorMessage, InputContent } from "./styles";
 import { useContext, useState } from "react";
 import { ShoppingCartListContext } from "../../contexts/ShoppingCartListContext";
 import { ShoppingCartCard } from "./ShoppingCartListCard";
@@ -19,14 +19,16 @@ const ordersShema = zod.object({
 });
 
 const shoppingDataSchema = zod.object({
-  cep: zod.string(),
-  street: zod.string(),
-  addressNumber: zod.string(),
+  cep: zod.number({ invalid_type_error: 'Informe o CEP' }),
+  street: zod.string().min(1, 'Informe a rua'),
+  addressNumber: zod.string().min(1, 'Informe o número'),
   complement: zod.string().optional(),
-  neighborhood: zod.string(),
-  city: zod.string(),
-  state: zod.string(),
-  paymentMethod: zod.string(),
+  neighborhood: zod.string().min(1, 'Informe o bairro'),
+  city: zod.string().min(1, 'Informe a cidade'),
+  state: zod.string().min(1, 'Informe a UF'),
+  paymentMethod: zod.enum(['credit', 'debit', 'money'], {
+    required_error: 'Informe um método de pagamento'
+  }),
   orders: zod.array(ordersShema),
   delivery: zod.number(),
   totalPrice: zod.number()
@@ -36,27 +38,19 @@ export type ShoppingFormData = zod.infer<typeof shoppingDataSchema>
 
 export function Checkout() {
   const { shoppingCartList, createNewOrder } = useContext(ShoppingCartListContext);
-  
+
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
 
   const shoppingDataForm = useForm<ShoppingFormData>({
     resolver: zodResolver(shoppingDataSchema),
-    defaultValues: {
-      cep: '',
-      street: '',
-      addressNumber: '',
-      complement: '',
-      neighborhood: '',
-      city: '',
-      state: '',
-      paymentMethod: 'credit',
-      orders: shoppingCartList,
-      delivery: 0,
-      totalPrice: 0
-    }
   })
 
-  const { handleSubmit, register, reset, setValue } = shoppingDataForm
+  const {
+    handleSubmit,
+    register,
+    reset,
+    setValue,
+    formState: { errors } } = shoppingDataForm
 
   const formatPrice = (price: number) => price.toFixed(2).replace('.', ',');
 
@@ -71,13 +65,17 @@ export function Checkout() {
 
   setValue('totalPrice', totalPrice);
   setValue('delivery', delivery);
-  
+
   function handleCreateNewOrder(data: ShoppingFormData) {
+    if (shoppingCartList.length === 0) {
+      return alert('É preciso ter pelo menos um item no carrinho')
+    }
+
     createNewOrder(data)
     reset()
   }
 
-  function handlePaymentSelect(method: 'money' | 'credit' | 'debit') { 
+  function handlePaymentSelect(method: 'money' | 'credit' | 'debit') {
     setSelectedPaymentMethod(method);
     setValue('paymentMethod', method, { shouldValidate: true });
   }
@@ -98,76 +96,112 @@ export function Checkout() {
 
             <Form>
               <InputWrapper>
-                <label htmlFor="cep" />
-                <input 
-                  type="text" 
-                  id="cep" 
-                  placeholder="CEP" 
-                  {...register('cep')}
-                />
+                <InputContent>
+                  <label htmlFor="cep" />
+                  <input
+                    type="number"
+                    id="cep"
+                    placeholder="CEP"
+                    {...register('cep', { valueAsNumber: true })}
+                  />
+                </InputContent>
+                {errors.cep?.message ? (
+                  <ErrorMessage role="alert">{errors.cep.message}</ErrorMessage>
+                ) : null}
               </InputWrapper>
 
               <InputWrapper>
-                <label htmlFor="street" />
-                <input 
-                  type="text" 
-                  id="street" 
-                  placeholder="Rua" 
-                  {...register('street')}
-                />
+                <InputContent>
+                  <label htmlFor="street" />
+                  <input
+                    type="text"
+                    id="street"
+                    placeholder="Rua"
+                    {...register('street')}
+                  />
+                </InputContent>
+                {errors.street?.message ? (
+                  <ErrorMessage role="alert">{errors.street.message}</ErrorMessage>
+                ) : null}
               </InputWrapper>
 
               <AddressTwoCollums>
                 <InputWrapper>
-                  <label htmlFor="addressNumber" />
-                  <input 
-                    type="text" 
-                    id="addressNumber" 
-                    placeholder="Número" 
-                    {...register('addressNumber')}
-                  />
+                  <InputContent>
+                    <label htmlFor="addressNumber" />
+                    <input
+                      type="text"
+                      id="addressNumber"
+                      placeholder="Número"
+                      {...register('addressNumber')}
+                    />
+                  </InputContent>
+                  {errors.addressNumber?.message ? (
+                    <ErrorMessage role="alert">{errors.addressNumber.message}</ErrorMessage>
+                  ) : null}
                 </InputWrapper>
 
                 <InputWrapper>
-                  <label htmlFor="complement" />
-                  <input 
-                    type="text" 
-                    id="complement" 
-                    placeholder="Complemento" 
-                    {...register('complement')}
-                  />
+                  <InputContent>
+                    <label htmlFor="complement" />
+                    <input
+                      type="text"
+                      id="complement"
+                      placeholder="Complemento"
+                      {...register('complement')}
+                    />
+                    <span>Opcional</span>
+                  </InputContent>
+                  {errors.complement?.message ? (
+                    <ErrorMessage role="alert">{errors.complement.message}</ErrorMessage>
+                  ) : null}
                 </InputWrapper>
               </AddressTwoCollums>
 
               <AddressThreeCollums>
                 <InputWrapper>
-                  <label htmlFor="neighborhood" />
-                  <input 
-                    type="text" 
-                    id="neighborhood" 
-                    placeholder="Bairro" 
-                    {...register('neighborhood')}
-                  />
+                  <InputContent>
+                    <label htmlFor="neighborhood" />
+                    <input
+                      type="text"
+                      id="neighborhood"
+                      placeholder="Bairro"
+                      {...register('neighborhood')}
+                    />
+                  </InputContent>
+                  {errors.neighborhood?.message ? (
+                    <ErrorMessage role="alert">{errors.neighborhood.message}</ErrorMessage>
+                  ) : null}
                 </InputWrapper>
 
                 <InputWrapper>
-                  <label htmlFor="city" />
-                  <input 
-                    type="text" 
-                    id="city" 
-                    placeholder="Cidade" 
-                    {...register('city')}
-                  />
+                  <InputContent>
+                    <label htmlFor="city" />
+                    <input
+                      type="text"
+                      id="city"
+                      placeholder="Cidade"
+                      {...register('city')}
+                    />
+                  </InputContent>
+                  {errors.city?.message ? (
+                    <ErrorMessage role="alert">{errors.city.message}</ErrorMessage>
+                  ) : null}
                 </InputWrapper>
 
                 <InputWrapper>
-                  <label htmlFor="state" />
-                  <input 
-                    type="text" 
-                    id="state" 
-                    placeholder="UF" 
-                    {...register('state')}
-                  />
+                  <InputContent>
+                    <label htmlFor="state" />
+                    <input
+                      type="text"
+                      id="state"
+                      placeholder="UF"
+                      {...register('state')}
+                    />
+                  </InputContent>
+                  {errors.state?.message ? (
+                    <ErrorMessage role="alert">{errors.state.message}</ErrorMessage>
+                  ) : null}
                 </InputWrapper>
               </AddressThreeCollums>
             </Form>
@@ -208,7 +242,13 @@ export function Checkout() {
                 <Money size={22} />
                 <span>Dinheiro</span>
               </PaymentOption>
+
             </PaymentOptions>
+            {errors.paymentMethod?.message ? (
+              <ErrorMessage role="alert">
+                {errors.paymentMethod.message}
+              </ErrorMessage>
+            ) : null}
           </PaymentContainer>
         </div>
 
