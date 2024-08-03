@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const CardContainer = styled.div`
-  background-color: ${(props) => props.theme['gray-400']};
+  background-color: ${(props) => props.theme['gray-200']};
 
   max-width: 16rem;
   padding: 1.25rem;
@@ -109,7 +109,7 @@ export const ButtonCart = styled.button`
   background: transparent;
   border: none;
 
-  background-color: ${(props) => props.theme['purple-900']};
+  background-color: ${(props) => props.theme['purple-500']};
   color: ${(props) => props.theme['gray-200']};
   border-radius: 6px;
 
@@ -117,4 +117,8 @@ export const ButtonCart = styled.button`
 
   display: grid;
   place-items: center;
+
+  &:hover {
+    background-color: ${(props) => props.theme['purple-900']};
+  }
 `

@@ -17,7 +17,7 @@ export const BannerContainer = styled.section`
 
   padding: 5.875rem 0 6.75rem;
 
-  box-shadow: inset 0 4px 20px 14px ${(props) => props.theme['gray-200']};
+  box-shadow: inset 0 4px 20px 14px ${(props) => props.theme['gray-100']};
 `
 
 export const BannerContent = styled.div`

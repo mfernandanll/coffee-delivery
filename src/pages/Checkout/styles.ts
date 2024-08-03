@@ -22,7 +22,7 @@ export const Title = styled.h3`
 `
 
 const BaseContainer = styled.div`
-  background-color: ${(props) => props.theme['gray-400']};
+  background-color: ${(props) => props.theme['gray-200']};
   padding: 2.5rem;
 `
 
@@ -168,16 +168,17 @@ export const PaymentOption = styled.button<PaymentOptionProps>`
 
   background: none;
   border: none;
-  outline: none;
+  outline:  ${(props) => props.theme['purple-100']} 1px solid;
   white-space: nowrap;
 
   font-size: 0.75rem;
   text-transform: uppercase;
   line-height: 1.6;
 
-  background-color: ${(props) => (props.selected ? props.theme['purple-100'] : props.theme['gray-500'])};
-  border: ${(props) => (props.selected ? `2px solid ${props.theme['purple-500']}` : 'none')};
+  background-color: ${(props) => (props.selected ? props.theme['purple-100'] : props.theme['gray-400'])};
+  border: ${(props) => (props.selected ? `1px solid ${props.theme['purple-500']}` : 'none')};
   color: ${(props) => props.theme['gray-700']};
+  box-shadow: ${(props) => (props.selected ? `0 0 0 1px  ${props.theme['purple-500']};` : 'none')}; 
   border-radius: 6px;
 
   padding: 1rem;
@@ -186,10 +187,19 @@ export const PaymentOption = styled.button<PaymentOptionProps>`
     color: ${(props) => props.theme['purple-500']};
   }
 
-  &::select{
-    background-color: ${(props) => props.theme['purple-100']};
-    border: 1px solid ${(props) => props.theme['purple-500']};
-  }  
+  &:hover {
+    background-color: ${(props) => props.theme['gray-500']};
+  }
+
+  &:active {
+    border: none;
+    box-shadow: none;
+    outline: none;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 1px ${(props) => props.theme['purple-500']};
+  }
 `
 
 export const ShopCartContainer = styled(BaseContainer)`
@@ -234,6 +244,10 @@ export const TotalContainer = styled.div`
     width: 100%;
 
     cursor: pointer;
+
+    &:hover {
+      background-color: ${(props) => props.theme['yellow-900']};
+    }
   }
 `
 export const Price = styled.div`

@@ -43,7 +43,7 @@ export const Counter = styled.div`
   padding: 0.75rem 0.5rem;
   height: 2.375rem;
 
-  background-color: ${(props) => props.theme['gray-500']};
+  background-color: ${(props) => props.theme['gray-400']};
   border-radius: 6px;
 
   display: flex;
@@ -64,7 +64,7 @@ export const RemoveButton = styled.button`
   align-items: center;
   gap: 0.25rem;
 
-  background-color: ${(props) => props.theme['gray-500']};
+  background-color: ${(props) => props.theme['gray-400']};
   border-radius: 6px;
   border: none;
  
@@ -75,6 +75,10 @@ export const RemoveButton = styled.button`
   text-transform: uppercase;
 
   cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) => props.theme['gray-500']};
+  }
 
   svg {
     color: ${(props) => props.theme['purple-500']};
