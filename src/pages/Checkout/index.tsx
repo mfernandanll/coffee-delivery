@@ -29,7 +29,9 @@ const shoppingDataSchema = zod.object({
   paymentMethod: zod.enum(['credit', 'debit', 'money'], {
     required_error: 'Informe um método de pagamento'
   }),
-  orders: zod.array(ordersShema),
+  orders: zod.array(ordersShema, {
+    required_error: 'É preciso ter pelo menos um item no carrinho'
+  }),
   delivery: zod.number(),
   totalPrice: zod.number()
 })
@@ -65,6 +67,7 @@ export function Checkout() {
 
   setValue('totalPrice', totalPrice);
   setValue('delivery', delivery);
+  setValue('orders', shoppingCartList);
 
   function handleCreateNewOrder(data: ShoppingFormData) {
     if (shoppingCartList.length === 0) {

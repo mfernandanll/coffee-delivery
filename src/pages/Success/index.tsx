@@ -1,9 +1,25 @@
 import { CurrencyDollar, MapPin, Timer } from "@phosphor-icons/react";
 import { CheckoutContent, CheckoutDataContainer, CheckoutItem, CheckoutItemData, CheckoutItemIcon, GradientContainer, SuccessContainer } from "./styles";
+import { useParams } from 'react-router-dom'
 
 import successImg from "../../assets/success-img.png";
+import { ShoppingCartListContext } from "../../contexts/ShoppingCartListContext";
+import { useContext } from "react";
 
 export function Success() {
+  const { orderId } = useParams()
+  const { orders } = useContext(ShoppingCartListContext);
+  const orderInfo = orders.find(order => order.id === orderId);
+  const paymentMethod = {
+    credit: 'Cartão de crédito',
+    debit: 'Cartão de débito',
+    money: 'Dinheiro',
+  }
+
+  if (!orderInfo?.id) {
+    return null
+  }
+
   return (
     <SuccessContainer>
       <header>
@@ -20,8 +36,8 @@ export function Success() {
               </CheckoutItemIcon>
 
               <CheckoutItemData>
-                <p>Entrega em <strong>Rua João Daniel Martinelli, 102</strong></p>
-                <p>Farrapos - Porto Alegre, RS</p>
+                <p>Entrega em <strong>{orderInfo.street}, {orderInfo.addressNumber}</strong></p>
+                <p>{orderInfo.neighborhood} - {orderInfo.city}, {orderInfo.state}</p>
               </CheckoutItemData>
             </CheckoutItem>
 
@@ -43,7 +59,7 @@ export function Success() {
 
               <CheckoutItemData>
                 <p>Pagamento na entrega</p>
-                <strong>Cartão de Crédito</strong>
+                <strong>{paymentMethod[orderInfo.paymentMethod]}</strong>
               </CheckoutItemData>
             </CheckoutItem>
           </CheckoutDataContainer>

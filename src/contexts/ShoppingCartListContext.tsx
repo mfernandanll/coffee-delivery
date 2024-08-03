@@ -2,10 +2,12 @@
 import { createContext, ReactNode, useState } from "react"
 import { Coffee, coffees } from "../data/Coffees";
 import { ShoppingFormData } from "../pages/Checkout";
+import { useNavigate } from 'react-router-dom'
 
 
 interface ShoppingCartListContextType {
   coffees: Coffee[];
+  orders: Order[];
   shoppingCartList: Coffee[];
   increaseCoffeeQuantityInTheList: (coffee: Coffee) => void;
   descreaseCoffeeQuantityFromList: (coffeeId: string) => void;
@@ -21,7 +23,7 @@ interface ShoppingCartListContextProviderProps {
 
 interface Order {
   id: string;
-  cep: string;
+  cep: number;
   street: string;
   addressNumber: string;
   complement?: string;
@@ -36,6 +38,9 @@ interface Order {
 
 export function ShoppingCartListContextProvider({ children }: ShoppingCartListContextProviderProps){
   const [shoppingCartList, setShoppingCartList] = useState<Coffee[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  const navigate = useNavigate()
   
   function increaseCoffeeQuantityInTheList(coffee: Coffee){
     setShoppingCartList((prevState) => {
@@ -78,7 +83,7 @@ export function ShoppingCartListContextProvider({ children }: ShoppingCartListCo
   function createNewOrder(data: ShoppingFormData) {
     const id = String(new Date().getTime())
 
-    const newOrder: Order = {
+    const order: Order = {
       id,
       cep: data.cep,
       street: data.street,
@@ -93,15 +98,17 @@ export function ShoppingCartListContextProvider({ children }: ShoppingCartListCo
       totalPrice: data.totalPrice
     }
 
-    console.log(newOrder);
-    
+    setOrders((prevState) => [...prevState, order])
 
+    setShoppingCartList([])
+    navigate(`/order/${order.id}/success`)
   }
 
   return (
     <ShoppingCartListContext.Provider
       value={{
         coffees,
+        orders,
         shoppingCartList,
         increaseCoffeeQuantityInTheList,
         descreaseCoffeeQuantityFromList,

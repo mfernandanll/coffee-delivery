@@ -4,6 +4,7 @@ import logo from "../../assets/logo.png";
 import { MapPin, ShoppingCart } from "@phosphor-icons/react";
 import { useContext } from "react";
 import { ShoppingCartListContext } from "../../contexts/ShoppingCartListContext";
+import { Link } from "react-router-dom";
 
 export function Header() {
   const { shoppingCartList } = useContext(ShoppingCartListContext);
@@ -13,7 +14,9 @@ export function Header() {
   return (
     <HeaderContainer>
       <HeaderContent>
-        <img src={logo} alt="Logo do coffee delivery" />
+        <Link to="/">
+          <img src={logo} alt="Logo do coffee delivery" />
+        </Link>
 
         <Buttons>
           <ButtonLocation>
