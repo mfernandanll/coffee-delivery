@@ -239,11 +239,10 @@ export const PaymentOption = styled.button<PaymentOptionProps>`
   }
 `
 
-export const ShopCartContainer = styled(BaseContainer)`
+export const CartContainer = styled(BaseContainer)`
   min-width: 28rem;
   border-radius: 6px 44px;
 `
-
 
 export const TotalContainer = styled.div`
   display: flex;

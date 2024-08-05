@@ -68,6 +68,8 @@ export const Price = styled.div`
   line-height: 1.3;
   color: ${(props) => props.theme['gray-700']};
 
+  margin-right: 1.438rem;
+
   span {
     font-size: 0.875rem;
   }
@@ -77,28 +79,6 @@ export const Price = styled.div`
     font-weight: 800;
   }
 `
-
-export const Counter = styled.div`
-  margin-left: 1.438rem;
-  padding: 0.75rem 0.5rem;
-  height: 2.375rem;
-
-  background-color: ${(props) => props.theme['gray-500']};
-  border-radius: 6px;
-
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-
-  button {
-    background: transparent;
-    border: none;
-    color: ${(props) => props.theme['purple-500']};
-
-    cursor: pointer;
-  }
-`
-
 export const ButtonCart = styled.button<{ $itemAdded?: boolean }>`
   margin-left: 0.5rem;
 

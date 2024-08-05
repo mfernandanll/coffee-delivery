@@ -7,25 +7,25 @@ import {
   Form, 
   InputWrapper, 
   PaymentContainer, 
-  PaymentOption, 
   PaymentOptions, 
   Price, 
-  ShopCartContainer, 
+  CartContainer, 
   Title, 
   TotalContainer, 
   HeaderTitle, 
   HeaderSubTitle, 
   ErrorMessage, 
   InputContent } from "./styles";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ShoppingCartContext } from "../../contexts/ShoppingCartListContext";
-import { ShoppingCartCard } from "./ShoppingCartListCard";
+import { CartCard } from "./CartCard";
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 
 import { coffees } from '../../data/coffees.json'
+import { RadioButton } from "./RadioButton";
 
 const newOrder = zod.object({
   cep: zod.number({ invalid_type_error: 'Informe o CEP' }),
@@ -52,13 +52,13 @@ export function Checkout() {
     register,
     handleSubmit,
     reset,
-    setValue,
+    watch,
     formState: { errors } 
   } = useForm<OrderInfo>({
     resolver: zodResolver(newOrder),
   })
   
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+  const selectedPaymentMethod = watch('paymentMethod');
   
   const formatPrice = (price: number) => price.toFixed(2).replace('.', ',');
 
@@ -85,11 +85,6 @@ export function Checkout() {
 
   const totalPrice = totalItemsPrice + shippingPrice;
   const totalPriceFormatted = formatPrice(totalPrice);
-
-  function handlePaymentSelect(method: 'money' | 'credit' | 'debit') {
-    setSelectedPaymentMethod(method);
-    setValue('paymentMethod', method, { shouldValidate: true });
-  }
 
   function handleCreateNewOrder(data: OrderInfo) {
     if (cart.length === 0) {
@@ -235,33 +230,34 @@ export function Checkout() {
                 <HeaderSubTitle>O pagamento é feito na entrega. Escolha a forma que deseja pagar</HeaderSubTitle>
               </div>
             </header>
+
             <PaymentOptions>
-              <PaymentOption
-                type="button"
-                selected={selectedPaymentMethod === 'credit'}
-                onClick={() => handlePaymentSelect('credit')}
+              <RadioButton
+                isSelected={selectedPaymentMethod === 'credit'}
+                {...register('paymentMethod')}
+                value="credit"
               >
                 <CreditCard size={22} />
                 <span>Cartão de crédito</span>
-              </PaymentOption>
+              </RadioButton>
 
-              <PaymentOption
-                type="button"
-                selected={selectedPaymentMethod === 'debit'}
-                onClick={() => handlePaymentSelect('debit')}
+              <RadioButton
+                isSelected={selectedPaymentMethod === 'debit'}
+                {...register('paymentMethod')}
+                value="debit"
               >
                 <Bank size={22} />
                 <span>Cartão de débito</span>
-              </PaymentOption>
+              </RadioButton>
 
-              <PaymentOption
-                type="button"
-                selected={selectedPaymentMethod === 'money'}
-                onClick={() => handlePaymentSelect('money')}
+              <RadioButton
+                isSelected={selectedPaymentMethod === 'money'}
+                {...register('paymentMethod')}
+                value="money"
               >
                 <Money size={22} />
                 <span>Dinheiro</span>
-              </PaymentOption>
+              </RadioButton>
 
             </PaymentOptions>
             {errors.paymentMethod?.message ? (
@@ -275,12 +271,12 @@ export function Checkout() {
         <div>
           <Title>Cafés selecionados</Title>
 
-          <ShopCartContainer>
+          <CartContainer>
             {
               coffeesInCart.length > 0 &&
 
               coffeesInCart.map(item => (
-                <ShoppingCartCard key={item.id} cartItem={item} />
+                <CartCard key={item.id} cartItem={item} />
               ))
             }
 
@@ -312,7 +308,7 @@ export function Checkout() {
               <button type="submit" form="order">Confirmar pedido</button>
 
             </TotalContainer>
-          </ShopCartContainer>
+          </CartContainer>
         </div>
       </form>
     </CheckoutContainer>

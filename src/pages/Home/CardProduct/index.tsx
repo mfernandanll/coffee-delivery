@@ -1,7 +1,8 @@
-import { CheckFat, Minus, Plus, ShoppingCart } from "@phosphor-icons/react";
-import { ButtonCart, CardContainer, Counter, Price, ShopCartContainer, Tag, Tags } from "./styles";
+import { CheckFat, ShoppingCart } from "@phosphor-icons/react";
+import { ButtonCart, CardContainer, Price, ShopCartContainer, Tag, Tags } from "./styles";
 import { useContext, useEffect, useState } from "react";
 import { ShoppingCartContext } from "../../../contexts/ShoppingCartListContext";
+import { QuantityCounter } from "../../../components/QuantityCounter";
 
 interface CardProductProps {
   coffee: {
@@ -72,22 +73,14 @@ export function CardProduct({ coffee }: CardProductProps) {
           <strong>{formattedPrice}</strong>
         </Price>
 
-        <Counter>
-          <button
-            onClick={handleDecrementQuantity}
-          >
-            <Minus size={14} weight="bold" />
-          </button>
-          <span>{quantity}</span>
-          <button
-            onClick={handleIncrementQuantity}
-          >
-            <Plus size={14} weight="bold" />
-          </button>
-        </Counter>
+        <QuantityCounter
+          quantity={quantity}
+          onDecrementItemQuantity={handleDecrementQuantity}
+          onIncrementItemQuantity={handleIncrementQuantity}
+        />
 
-        <ButtonCart 
-          disabled={isItemAdded} 
+        <ButtonCart
+          disabled={isItemAdded}
           onClick={handleAddItem}
           $itemAdded={isItemAdded}
         >

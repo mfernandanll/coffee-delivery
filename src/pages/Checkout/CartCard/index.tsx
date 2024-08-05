@@ -1,9 +1,10 @@
-import { Minus, Plus, Trash } from "@phosphor-icons/react";
-import { CardContent, Counter, ProductPrice, RemoveButton, ShoppingCartCardContainer } from "./styles";
+import { Trash } from "@phosphor-icons/react";
+import { CardContent, ProductPrice, RemoveButton, ShoppingCartCardContainer } from "./styles";
 import { useContext } from "react";
 import { ShoppingCartContext } from "../../../contexts/ShoppingCartListContext";
+import { QuantityCounter } from "../../../components/QuantityCounter";
 
-interface ShoppingCartCardProps {
+interface CartCardProps {
   cartItem: {
     quantity: number;
     id: string;
@@ -15,7 +16,7 @@ interface ShoppingCartCardProps {
   };
 }
 
-export function ShoppingCartCard({ cartItem }: ShoppingCartCardProps) {
+export function CartCard({ cartItem }: CartCardProps) {
   const { 
     removeItem, 
     incrementItemQuantity, 
@@ -23,11 +24,11 @@ export function ShoppingCartCard({ cartItem }: ShoppingCartCardProps) {
   
   const formattedPrice = cartItem.price.toFixed(2).replace('.', ',');
 
-  function handleIncreaseCoffeeQuantity(){
+  function handleIncrementQuantity(){
     incrementItemQuantity(cartItem.id)
   }
 
-  function handleDecreaseCoffeeQuantity() {
+  function handleDecrementQuantity() {
     decrementItemQuantity(cartItem.id)
   }
 
@@ -43,19 +44,11 @@ export function ShoppingCartCard({ cartItem }: ShoppingCartCardProps) {
         <span>{cartItem.name}</span>
 
         <div>
-          <Counter>
-            <button
-              onClick={handleDecreaseCoffeeQuantity}
-            >
-              <Minus size={14} weight="bold" />
-            </button>
-            <span>{cartItem.quantity}</span>
-            <button
-              onClick={handleIncreaseCoffeeQuantity}
-            >
-              <Plus size={14} weight="bold" />
-            </button>
-          </Counter>
+          <QuantityCounter 
+            quantity={cartItem.quantity}
+            onDecrementItemQuantity={handleDecrementQuantity}
+            onIncrementItemQuantity={handleIncrementQuantity}
+          />
 
           <RemoveButton
             onClick={handleRemoveItem}
