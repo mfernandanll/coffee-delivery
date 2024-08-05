@@ -1,15 +1,15 @@
-import { ButtonLocation, Buttons, CartButton, HeaderContainer, HeaderContent } from "./styles";
+import { Location, Aside, Cart, HeaderContainer, HeaderContent } from "./styles";
 
 import logo from "../../assets/logo.png";
 import { MapPin, ShoppingCart } from "@phosphor-icons/react";
 import { useContext } from "react";
-import { ShoppingCartListContext } from "../../contexts/ShoppingCartListContext";
+import { ShoppingCartContext } from "../../contexts/ShoppingCartListContext";
 import { Link } from "react-router-dom";
 
 export function Header() {
-  const { shoppingCartList } = useContext(ShoppingCartListContext);
+  const { cart } = useContext(ShoppingCartContext);
 
-  const totalProducts = shoppingCartList.reduce((total, item) => total + item.quantity, 0);
+  const totalProducts = cart.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <HeaderContainer>
@@ -18,16 +18,17 @@ export function Header() {
           <img src={logo} alt="Logo do coffee delivery" />
         </Link>
 
-        <Buttons>
-          <ButtonLocation>
+        <Aside>
+          <Location>
             <MapPin size={22} weight="fill" />
             <span>Manaus, AM</span>
-          </ButtonLocation>
-          <CartButton>
+          </Location>
+
+          <Cart to={`checkout`} aria-disabled={cart.length === 0}>
             <ShoppingCart size={22} weight="fill" />
             <div><span>{totalProducts}</span></div>
-          </CartButton>
-        </Buttons>
+          </Cart>
+        </Aside>
       </HeaderContent>
     </HeaderContainer>
   )

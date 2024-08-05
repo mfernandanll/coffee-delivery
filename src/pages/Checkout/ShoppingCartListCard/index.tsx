@@ -1,36 +1,43 @@
 import { Minus, Plus, Trash } from "@phosphor-icons/react";
 import { CardContent, Counter, ProductPrice, RemoveButton, ShoppingCartCardContainer } from "./styles";
-import { Coffee } from "../../../data/Coffees";
 import { useContext } from "react";
-import { ShoppingCartListContext } from "../../../contexts/ShoppingCartListContext";
+import { ShoppingCartContext } from "../../../contexts/ShoppingCartListContext";
 
 interface ShoppingCartCardProps {
-  cartItem: Coffee;
+  cartItem: {
+    quantity: number;
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    tags: string[];
+    image: string;
+  };
 }
 
 export function ShoppingCartCard({ cartItem }: ShoppingCartCardProps) {
   const { 
-    removeCoffeeFromList, 
-    increaseCoffeeQuantityInTheList, 
-    descreaseCoffeeQuantityFromList } = useContext(ShoppingCartListContext);
+    removeItem, 
+    incrementItemQuantity, 
+    decrementItemQuantity } = useContext(ShoppingCartContext);
   
   const formattedPrice = cartItem.price.toFixed(2).replace('.', ',');
 
   function handleIncreaseCoffeeQuantity(){
-    increaseCoffeeQuantityInTheList(cartItem)
+    incrementItemQuantity(cartItem.id)
   }
 
   function handleDecreaseCoffeeQuantity() {
-    descreaseCoffeeQuantityFromList(cartItem.id)
+    decrementItemQuantity(cartItem.id)
   }
 
   function handleRemoveItem(){
-    removeCoffeeFromList(cartItem.id)
+    removeItem(cartItem.id)
   }
 
   return (
     <ShoppingCartCardContainer>
-      <img src={cartItem.imgPath} alt={`${cartItem.name}`}  />
+      <img src={cartItem.image} alt={`${cartItem.name}`}  />
 
       <CardContent>
         <span>{cartItem.name}</span>

@@ -1,122 +1,91 @@
 
-import { createContext, ReactNode, useState } from "react"
-import { Coffee, coffees } from "../data/Coffees";
-import { ShoppingFormData } from "../pages/Checkout";
+import { createContext, ReactNode, useEffect, useReducer } from "react"
 import { useNavigate } from 'react-router-dom'
+import { cartReducer, Item, Order } from "../reducers/cart/reducer";
+import { OrderInfo } from "../pages/Checkout";
+import { addItemAction, checkoutCartAction, decrementItemQuantityAction, incrementItemQuantityAction, removeItemAction } from "../reducers/cart/actions";
 
-
-interface ShoppingCartListContextType {
-  coffees: Coffee[];
+interface ShoppingCartContextType {
   orders: Order[];
-  shoppingCartList: Coffee[];
-  increaseCoffeeQuantityInTheList: (coffee: Coffee) => void;
-  descreaseCoffeeQuantityFromList: (coffeeId: string) => void;
-  removeCoffeeFromList: (coffeeId: string) => void;
-  createNewOrder: (data: ShoppingFormData) => void;
+  cart: Item[];
+  addItem: (item: Item) => void
+  removeItem: (itemId: Item['id']) => void
+  decrementItemQuantity: (itemId: Item['id']) => void
+  incrementItemQuantity: (itemId: Item['id']) => void
+  checkout: (order: OrderInfo) => void
 }
 
-export const ShoppingCartListContext = createContext({} as ShoppingCartListContextType)
+export const ShoppingCartContext = createContext({} as ShoppingCartContextType)
 
-interface ShoppingCartListContextProviderProps {
+interface ShoppingCartContextProviderProps {
   children: ReactNode;
 }
 
-interface Order {
-  id: string;
-  cep: number;
-  street: string;
-  addressNumber: string;
-  complement?: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  paymentMethod: 'money' | 'credit' | 'debit';
-  orders: Coffee[];
-  delivery: number;
-  totalPrice: number;
-}
+export function ShoppingCartContextProvider({ children }: ShoppingCartContextProviderProps){
+  const [cartState, dispatch] = useReducer(
+    cartReducer,
+    {
+      cart: [],
+      orders: [],
+    },
+    (cartState) => {
+      const storedStateAsJSON = localStorage.getItem(
+        '@coffee-delivery:cart-state-1.0.0',
+      )
 
-export function ShoppingCartListContextProvider({ children }: ShoppingCartListContextProviderProps){
-  const [shoppingCartList, setShoppingCartList] = useState<Coffee[]>([]);
-  const [orders, setOrders] = useState<Order[]>([]);
+      if (storedStateAsJSON) {
+        return JSON.parse(storedStateAsJSON)
+      }
+
+      return cartState
+    }
+  );
 
   const navigate = useNavigate()
-  
-  function increaseCoffeeQuantityInTheList(coffee: Coffee){
-    setShoppingCartList((prevState) => {
-      const itemInCart = prevState.find(item => item.id === coffee.id);
-  
-      if (itemInCart) {
-        return prevState.map(item =>
-          item.id === coffee.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      } else {
-        return [...prevState, { ...coffee, quantity: 1 }];
-      }
-    });
+
+  const { cart, orders } = cartState
+
+  function addItem(item: Item) {
+    dispatch(addItemAction(item))
   }
 
-  function descreaseCoffeeQuantityFromList(coffeeId: string) {
-    setShoppingCartList((prevState) => {
-      const itemInCart = prevState.find(item => item.id === coffeeId);
-
-      if (itemInCart && itemInCart.quantity > 1) {
-        return prevState.map(item =>
-          item.id === coffeeId ? { ...item, quantity: item.quantity - 1 } : item
-        );
-      } else if (itemInCart && itemInCart.quantity == 1) {
-        const filteresList = prevState.filter(item => item.id !== coffeeId);
-        return filteresList
-      } else {
-        return prevState
-      }
-    })
+  function removeItem(itemId: Item['id']) {
+    dispatch(removeItemAction(itemId))
   }
 
-  function removeCoffeeFromList(coffeeId: string){
-    setShoppingCartList((prevState) => {
-      const filteresList = prevState.filter(item => item.id !== coffeeId);
-      return filteresList
-    })
+  function checkout(order: OrderInfo) {
+    dispatch(checkoutCartAction(order, navigate))
   }
 
-  function createNewOrder(data: ShoppingFormData) {
-    const id = String(new Date().getTime())
+  function incrementItemQuantity(itemId: Item['id']) {
+    dispatch(incrementItemQuantityAction(itemId))
+  }
 
-    const order: Order = {
-      id,
-      cep: data.cep,
-      street: data.street,
-      addressNumber: data.addressNumber,
-      complement: data.complement,
-      neighborhood: data.neighborhood,
-      city: data.city,
-      state: data.state,
-      paymentMethod: data.paymentMethod,
-      orders: data.orders,
-      delivery: data.delivery,
-      totalPrice: data.totalPrice
+  function decrementItemQuantity(itemId: Item['id']) {
+    dispatch(decrementItemQuantityAction(itemId))
+  }
+
+  useEffect(() => {
+    if (cartState) {
+      const stateJSON = JSON.stringify(cartState)
+
+      localStorage.setItem('@coffee-delivery:cart-state-1.0.0', stateJSON)
     }
-
-    setOrders((prevState) => [...prevState, order])
-
-    setShoppingCartList([])
-    navigate(`/order/${order.id}/success`)
-  }
+  }, [cartState])
 
   return (
-    <ShoppingCartListContext.Provider
+    <ShoppingCartContext.Provider
       value={{
-        coffees,
+        addItem,
+        cart,
         orders,
-        shoppingCartList,
-        increaseCoffeeQuantityInTheList,
-        descreaseCoffeeQuantityFromList,
-        removeCoffeeFromList,
-        createNewOrder
+        decrementItemQuantity,
+        incrementItemQuantity,
+        removeItem,
+        checkout,
       }}
     >
       {children}
-    </ShoppingCartListContext.Provider>
+    </ShoppingCartContext.Provider>
   )
 }

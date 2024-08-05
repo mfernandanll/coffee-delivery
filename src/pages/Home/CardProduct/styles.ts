@@ -99,7 +99,7 @@ export const Counter = styled.div`
   }
 `
 
-export const ButtonCart = styled.button`
+export const ButtonCart = styled.button<{ $itemAdded?: boolean }>`
   margin-left: 0.5rem;
 
   width: 2.375rem;
@@ -109,7 +109,7 @@ export const ButtonCart = styled.button`
   background: transparent;
   border: none;
 
-  background-color: ${(props) => props.theme['purple-500']};
+  background-color: ${(props) => props.$itemAdded ? props.theme['yellow-500'] : props.theme['purple-500']};
   color: ${(props) => props.theme['gray-200']};
   border-radius: 6px;
 
@@ -119,6 +119,6 @@ export const ButtonCart = styled.button`
   place-items: center;
 
   &:hover {
-    background-color: ${(props) => props.theme['purple-900']};
+    background-color: ${(props) => props.$itemAdded ? props.theme['yellow-900'] : props.theme['purple-900']};
   }
 `

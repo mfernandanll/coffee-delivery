@@ -2,17 +2,10 @@ import { Coffee, Package, ShoppingCart, Timer } from "@phosphor-icons/react"
 import banner from "../../assets/bannerImg.png"
 import { BannerContainer, BannerContent, BannerTitle, BenefitsItems, ButtonItem, GridProducts, HomeContainer, Item, ProductsContainer } from "./styles"
 import { CardProduct } from "./CardProduct";
-import { useContext } from "react";
-import { ShoppingCartListContext } from "../../contexts/ShoppingCartListContext";
+
+import { coffees } from '../../data/coffees.json'
 
 export function Home() {
-  const { coffees, shoppingCartList } = useContext(ShoppingCartListContext);
-
-  
-  console.log(shoppingCartList);
-  
-
-
   return (
     <HomeContainer>
       <BannerContainer>

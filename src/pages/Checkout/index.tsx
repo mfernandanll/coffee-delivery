@@ -1,24 +1,33 @@
 import { Bank, CreditCard, CurrencyDollar, MapPinLine, Money } from "@phosphor-icons/react";
-import { AddressContainer, AddressThreeCollums, AddressTwoCollums, CheckoutContainer, Form, InputWrapper, PaymentContainer, PaymentOption, PaymentOptions, Price, ShopCartContainer, Title, TotalContainer, HeaderTitle, HeaderSubTitle, ErrorMessage, InputContent } from "./styles";
+import { 
+  AddressContainer, 
+  AddressThreeCollums, 
+  AddressTwoCollums, 
+  CheckoutContainer, 
+  Form, 
+  InputWrapper, 
+  PaymentContainer, 
+  PaymentOption, 
+  PaymentOptions, 
+  Price, 
+  ShopCartContainer, 
+  Title, 
+  TotalContainer, 
+  HeaderTitle, 
+  HeaderSubTitle, 
+  ErrorMessage, 
+  InputContent } from "./styles";
 import { useContext, useState } from "react";
-import { ShoppingCartListContext } from "../../contexts/ShoppingCartListContext";
+import { ShoppingCartContext } from "../../contexts/ShoppingCartListContext";
 import { ShoppingCartCard } from "./ShoppingCartListCard";
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 
-const ordersShema = zod.object({
-  id: zod.string(),
-  name: zod.string(),
-  description: zod.string(),
-  price: zod.number(),
-  quantity: zod.number(),
-  tags: zod.array(zod.string()),
-  imgPath: zod.string(),
-});
+import { coffees } from '../../data/coffees.json'
 
-const shoppingDataSchema = zod.object({
+const newOrder = zod.object({
   cep: zod.number({ invalid_type_error: 'Informe o CEP' }),
   street: zod.string().min(1, 'Informe a rua'),
   addressNumber: zod.string().min(1, 'Informe o número'),
@@ -28,59 +37,67 @@ const shoppingDataSchema = zod.object({
   state: zod.string().min(1, 'Informe a UF'),
   paymentMethod: zod.enum(['credit', 'debit', 'money'], {
     required_error: 'Informe um método de pagamento'
-  }),
-  orders: zod.array(ordersShema, {
-    required_error: 'É preciso ter pelo menos um item no carrinho'
-  }),
-  delivery: zod.number(),
-  totalPrice: zod.number()
+  })
 })
 
-export type ShoppingFormData = zod.infer<typeof shoppingDataSchema>
+export type OrderInfo = zod.infer<typeof newOrder>
+
+const shippingPrice = 7.9;
 
 export function Checkout() {
-  const { shoppingCartList, createNewOrder } = useContext(ShoppingCartListContext);
+  const { cart, checkout } = useContext(ShoppingCartContext);
 
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
-
-  const shoppingDataForm = useForm<ShoppingFormData>({
-    resolver: zodResolver(shoppingDataSchema),
-  })
-
+  
   const {
-    handleSubmit,
     register,
+    handleSubmit,
     reset,
     setValue,
-    formState: { errors } } = shoppingDataForm
-
+    formState: { errors } 
+  } = useForm<OrderInfo>({
+    resolver: zodResolver(newOrder),
+  })
+  
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+  
   const formatPrice = (price: number) => price.toFixed(2).replace('.', ',');
 
-  const totalProductsPrice = shoppingCartList.reduce((total, item) => total + (item.price * item.quantity), 0);
-  const totalProductsPriceFormatted = formatPrice(totalProductsPrice);
+  const shippingPriceFormatted = formatPrice(shippingPrice);
 
-  const delivery = 9.9;
-  const deliveryFormatted = formatPrice(delivery);
+  const coffeesInCart = cart.map((item) => {
+    const coffeeInfo = coffees.find((coffee) => coffee.id === item.id)
 
-  const totalPrice = totalProductsPrice + delivery;
-  const totalPriceFormatted = formatPrice(totalPrice);
-
-  setValue('totalPrice', totalPrice);
-  setValue('delivery', delivery);
-  setValue('orders', shoppingCartList);
-
-  function handleCreateNewOrder(data: ShoppingFormData) {
-    if (shoppingCartList.length === 0) {
-      return alert('É preciso ter pelo menos um item no carrinho')
+    if (!coffeeInfo) {
+      throw new Error('Invalid coffee.')
     }
 
-    createNewOrder(data)
-    reset()
-  }
+    return {
+      ...coffeeInfo,
+      quantity: item.quantity,
+    }
+  })
+
+  const totalItemsPrice = coffeesInCart.reduce((previousValue, currentItem) => {
+    return (previousValue += currentItem.price * currentItem.quantity)
+  }, 0)
+
+  const totalItemsPriceFormatted = formatPrice(totalItemsPrice);
+
+  const totalPrice = totalItemsPrice + shippingPrice;
+  const totalPriceFormatted = formatPrice(totalPrice);
 
   function handlePaymentSelect(method: 'money' | 'credit' | 'debit') {
     setSelectedPaymentMethod(method);
     setValue('paymentMethod', method, { shouldValidate: true });
+  }
+
+  function handleCreateNewOrder(data: OrderInfo) {
+    if (cart.length === 0) {
+      return alert('É preciso ter pelo menos um item no carrinho')
+    }
+
+    checkout(data)
+    reset()
   }
 
   return (
@@ -260,9 +277,9 @@ export function Checkout() {
 
           <ShopCartContainer>
             {
-              shoppingCartList.length > 0 &&
+              coffeesInCart.length > 0 &&
 
-              shoppingCartList.map(item => (
+              coffeesInCart.map(item => (
                 <ShoppingCartCard key={item.id} cartItem={item} />
               ))
             }
@@ -272,7 +289,7 @@ export function Checkout() {
                 <span>Total de itens</span>
                 <Price>
                   <span>R$</span>
-                  <span>{totalProductsPriceFormatted}</span>
+                  <span>{totalItemsPriceFormatted}</span>
                 </Price>
               </div>
 
@@ -280,7 +297,7 @@ export function Checkout() {
                 <span>Entrega</span>
                 <Price>
                   <span>R$</span>
-                  <span>{shoppingCartList.length > 0 ? deliveryFormatted : '0.00'}</span>
+                  <span>{cart.length > 0 ? shippingPriceFormatted : '0.00'}</span>
                 </Price>
               </div>
 
@@ -288,7 +305,7 @@ export function Checkout() {
                 <span>Total</span>
                 <div>
                   <span>R$</span>
-                  <span>{shoppingCartList.length > 0 ? totalPriceFormatted : '0.00'}</span>
+                  <span>{cart.length > 0 ? totalPriceFormatted : '0.00'}</span>
                 </div>
               </div>
 

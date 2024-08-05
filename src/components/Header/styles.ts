@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const HeaderContainer = styled.header`
   height: 6.5rem;
@@ -13,21 +14,17 @@ export const HeaderContent = styled.div`
   justify-content: space-between;
 `
 
-export const Buttons = styled.div`
+export const Aside = styled.aside`
   display: flex;
   gap: 0.75rem;
 `
 
-const BaseButton = styled.button`
-  background: transparent;
-  border: 0;
+export const Location = styled.div`
   border-radius: 6px;
 
   height: 2.375rem;
   padding: 0.5rem;
-`
 
-export const ButtonLocation = styled(BaseButton)`
   background-color: ${(props) => props.theme['purple-100']};
   color: ${(props) => props.theme['purple-500']};
 
@@ -41,7 +38,13 @@ export const ButtonLocation = styled(BaseButton)`
   }
 `
 
-export const CartButton = styled(BaseButton)`
+export const Cart = styled(Link)`
+  border: 0;
+  border-radius: 6px;
+
+  height: 2.375rem;
+  padding: 0.5rem;
+
   background-color: ${(props) => props.theme['yellow-100']};
   color: ${(props) => props.theme['yellow-900']};
 

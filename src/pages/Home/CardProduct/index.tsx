@@ -1,37 +1,61 @@
-import { Minus, Plus, ShoppingCart } from "@phosphor-icons/react";
-// import { Coffee } from "..";
+import { CheckFat, Minus, Plus, ShoppingCart } from "@phosphor-icons/react";
 import { ButtonCart, CardContainer, Counter, Price, ShopCartContainer, Tag, Tags } from "./styles";
-import { Coffee } from "../../../data/Coffees";
-import { useContext } from "react";
-import { ShoppingCartListContext } from "../../../contexts/ShoppingCartListContext";
-import { NavLink } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { ShoppingCartContext } from "../../../contexts/ShoppingCartListContext";
 
 interface CardProductProps {
-  coffee: Coffee;
+  coffee: {
+    id: string
+    name: string
+    description: string
+    tags: string[]
+    price: number
+    image: string
+  }
 }
 
-export function CardProduct({ coffee }: CardProductProps){  
-  const {
-    shoppingCartList,
-    increaseCoffeeQuantityInTheList,
-    descreaseCoffeeQuantityFromList } = useContext(ShoppingCartListContext);
+export function CardProduct({ coffee }: CardProductProps) {
+  const [quantity, setQuantity] = useState(1)
+  const [isItemAdded, setIsItemAdded] = useState(false)
+  const { addItem } = useContext(ShoppingCartContext);
 
   const formattedPrice = coffee.price.toFixed(2).replace('.', ',');
 
-  const itemOnList = shoppingCartList.find(item => item.id === coffee.id);
-  const quantityToShow = itemOnList ? itemOnList.quantity : coffee.quantity;
-
-  function handleIncreaseCoffeeQuantity(){
-    increaseCoffeeQuantityInTheList(coffee)
+  function handleIncrementQuantity() {
+    setQuantity((state) => state + 1)
   }
 
-  function handleDecreaseCoffeeQuantity() {
-    descreaseCoffeeQuantityFromList(coffee.id)
+  function handleDecrementQuantity() {
+    if (quantity > 1) {
+      setQuantity((state) => state - 1)
+    }
   }
+
+  function handleAddItem() {
+    addItem({ id: coffee.id, quantity })
+    setIsItemAdded(true)
+    setQuantity(1)
+  }
+
+  useEffect(() => {
+    let timeout: number
+
+    if (isItemAdded) {
+      timeout = setTimeout(() => {
+        setIsItemAdded(false)
+      }, 1000)
+    }
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout)
+      }
+    }
+  }, [isItemAdded])
 
   return (
     <CardContainer>
-      <img src={coffee.imgPath} alt={`${coffee.name}`} />
+      <img src={coffee.image} alt={`${coffee.name}`} />
       <Tags>
         {
           coffee.tags.map(tag => (
@@ -42,7 +66,7 @@ export function CardProduct({ coffee }: CardProductProps){
       <h3>{coffee.name}</h3>
       <p>{coffee.description}</p>
       <ShopCartContainer>
-        
+
         <Price>
           <span>R$</span>
           <strong>{formattedPrice}</strong>
@@ -50,23 +74,32 @@ export function CardProduct({ coffee }: CardProductProps){
 
         <Counter>
           <button
-            onClick={handleDecreaseCoffeeQuantity}
+            onClick={handleDecrementQuantity}
           >
-            <Minus size={14} weight="bold"/>
+            <Minus size={14} weight="bold" />
           </button>
-          <span>{quantityToShow}</span>
+          <span>{quantity}</span>
           <button
-            onClick={handleIncreaseCoffeeQuantity}
+            onClick={handleIncrementQuantity}
           >
-            <Plus size={14} weight="bold"/>
+            <Plus size={14} weight="bold" />
           </button>
         </Counter>
 
-        <NavLink to="/checkout" title="Checkout">
-          <ButtonCart>
-            <ShoppingCart size={18} weight="fill"/>
-          </ButtonCart>
-        </NavLink>
+        <ButtonCart 
+          disabled={isItemAdded} 
+          onClick={handleAddItem}
+          $itemAdded={isItemAdded}
+        >
+          {isItemAdded ? (
+            <CheckFat
+              weight="fill"
+              size={18}
+            />
+          ) : (
+            <ShoppingCart size={18} weight="fill" />
+          )}
+        </ButtonCart>
       </ShopCartContainer>
     </CardContainer>
   )

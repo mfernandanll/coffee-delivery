@@ -3,13 +3,13 @@ import { CheckoutContent, CheckoutDataContainer, CheckoutItem, CheckoutItemData,
 import { useParams } from 'react-router-dom'
 
 import successImg from "../../assets/success-img.png";
-import { ShoppingCartListContext } from "../../contexts/ShoppingCartListContext";
+import { ShoppingCartContext } from "../../contexts/ShoppingCartListContext";
 import { useContext } from "react";
 
 export function Success() {
+  const { orders } = useContext(ShoppingCartContext);
   const { orderId } = useParams()
-  const { orders } = useContext(ShoppingCartListContext);
-  const orderInfo = orders.find(order => order.id === orderId);
+  const orderInfo = orders.find(order => order.id === Number(orderId));
   const paymentMethod = {
     credit: 'Cartão de crédito',
     debit: 'Cartão de débito',
