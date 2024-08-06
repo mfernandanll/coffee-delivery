@@ -1,21 +1,17 @@
 import { Bank, CreditCard, CurrencyDollar, MapPinLine, Money } from "@phosphor-icons/react";
-import { 
-  AddressContainer, 
-  AddressThreeCollums, 
-  AddressTwoCollums, 
-  CheckoutContainer, 
-  Form, 
-  InputWrapper, 
-  PaymentContainer, 
-  PaymentOptions, 
-  Price, 
-  CartContainer, 
-  Title, 
-  TotalContainer, 
-  HeaderTitle, 
-  HeaderSubTitle, 
-  ErrorMessage, 
-  InputContent } from "./styles";
+import {
+  AddressContainer,
+  CheckoutContainer,
+  Form,
+  PaymentContainer,
+  PaymentOptions,
+  Price,
+  CartContainer,
+  Title,
+  TotalContainer,
+  HeaderTitle,
+  HeaderSubTitle,
+} from "./styles";
 import { useContext } from "react";
 import { ShoppingCartContext } from "../../contexts/ShoppingCartListContext";
 import { CartCard } from "./CartCard";
@@ -26,6 +22,7 @@ import * as zod from 'zod'
 
 import { coffees } from '../../data/coffees.json'
 import { RadioButton } from "./RadioButton";
+import { InputText } from "./InputText";
 
 const newOrder = zod.object({
   cep: zod.number({ invalid_type_error: 'Informe o CEP' }),
@@ -47,19 +44,19 @@ const shippingPrice = 7.9;
 export function Checkout() {
   const { cart, checkout } = useContext(ShoppingCartContext);
 
-  
+
   const {
     register,
     handleSubmit,
     reset,
     watch,
-    formState: { errors } 
+    formState: { errors }
   } = useForm<OrderInfo>({
     resolver: zodResolver(newOrder),
   })
-  
+
   const selectedPaymentMethod = watch('paymentMethod');
-  
+
   const formatPrice = (price: number) => price.toFixed(2).replace('.', ',');
 
   const shippingPriceFormatted = formatPrice(shippingPrice);
@@ -110,115 +107,62 @@ export function Checkout() {
             </header>
 
             <Form>
-              <InputWrapper>
-                <InputContent>
-                  <label htmlFor="cep" />
-                  <input
-                    type="number"
-                    id="cep"
-                    placeholder="CEP"
-                    {...register('cep', { valueAsNumber: true })}
-                  />
-                </InputContent>
-                {errors.cep?.message ? (
-                  <ErrorMessage role="alert">{errors.cep.message}</ErrorMessage>
-                ) : null}
-              </InputWrapper>
+              <InputText
+                placeholder="CEP"
+                type="number"
+                containerProps={{ style: { gridArea: 'cep' } }}
+                errorMessage={errors.cep?.message}
+                {...register('cep', { valueAsNumber: true })}
+              />
 
-              <InputWrapper>
-                <InputContent>
-                  <label htmlFor="street" />
-                  <input
-                    type="text"
-                    id="street"
-                    placeholder="Rua"
-                    {...register('street')}
-                  />
-                </InputContent>
-                {errors.street?.message ? (
-                  <ErrorMessage role="alert">{errors.street.message}</ErrorMessage>
-                ) : null}
-              </InputWrapper>
+              <InputText
+                placeholder="Rua"
+                type="text"
+                containerProps={{ style: { gridArea: 'street' } }}
+                errorMessage={errors.street?.message}
+                {...register('street')}
+              />
 
-              <AddressTwoCollums>
-                <InputWrapper>
-                  <InputContent>
-                    <label htmlFor="addressNumber" />
-                    <input
-                      type="text"
-                      id="addressNumber"
-                      placeholder="Número"
-                      {...register('addressNumber')}
-                    />
-                  </InputContent>
-                  {errors.addressNumber?.message ? (
-                    <ErrorMessage role="alert">{errors.addressNumber.message}</ErrorMessage>
-                  ) : null}
-                </InputWrapper>
+              <InputText
+                placeholder="Número"
+                type="text"
+                containerProps={{ style: { gridArea: 'addressNumber' } }}
+                errorMessage={errors.addressNumber?.message}
+                {...register('addressNumber')}
+              />
 
-                <InputWrapper>
-                  <InputContent>
-                    <label htmlFor="complement" />
-                    <input
-                      type="text"
-                      id="complement"
-                      placeholder="Complemento"
-                      {...register('complement')}
-                    />
-                    <span>Opcional</span>
-                  </InputContent>
-                  {errors.complement?.message ? (
-                    <ErrorMessage role="alert">{errors.complement.message}</ErrorMessage>
-                  ) : null}
-                </InputWrapper>
-              </AddressTwoCollums>
+              <InputText
+                placeholder="Complemento"
+                type="text"
+                containerProps={{ style: { gridArea: 'complement' } }}
+                optional
+                errorMessage={errors.complement?.message}
+                {...register('complement')}
+              />
 
-              <AddressThreeCollums>
-                <InputWrapper>
-                  <InputContent>
-                    <label htmlFor="neighborhood" />
-                    <input
-                      type="text"
-                      id="neighborhood"
-                      placeholder="Bairro"
-                      {...register('neighborhood')}
-                    />
-                  </InputContent>
-                  {errors.neighborhood?.message ? (
-                    <ErrorMessage role="alert">{errors.neighborhood.message}</ErrorMessage>
-                  ) : null}
-                </InputWrapper>
+              <InputText
+                placeholder="Bairro"
+                type="text"
+                containerProps={{ style: { gridArea: 'neighborhood' } }}
+                errorMessage={errors.neighborhood?.message}
+                {...register('neighborhood')}
+              />
 
-                <InputWrapper>
-                  <InputContent>
-                    <label htmlFor="city" />
-                    <input
-                      type="text"
-                      id="city"
-                      placeholder="Cidade"
-                      {...register('city')}
-                    />
-                  </InputContent>
-                  {errors.city?.message ? (
-                    <ErrorMessage role="alert">{errors.city.message}</ErrorMessage>
-                  ) : null}
-                </InputWrapper>
+              <InputText
+                placeholder="Cidade"
+                type="text"
+                containerProps={{ style: { gridArea: 'city' } }}
+                errorMessage={errors.city?.message}
+                {...register('city')}
+              />
 
-                <InputWrapper>
-                  <InputContent>
-                    <label htmlFor="state" />
-                    <input
-                      type="text"
-                      id="state"
-                      placeholder="UF"
-                      {...register('state')}
-                    />
-                  </InputContent>
-                  {errors.state?.message ? (
-                    <ErrorMessage role="alert">{errors.state.message}</ErrorMessage>
-                  ) : null}
-                </InputWrapper>
-              </AddressThreeCollums>
+              <InputText
+                placeholder="UF"
+                type="text"
+                containerProps={{ style: { gridArea: 'state' } }}
+                errorMessage={errors.state?.message}
+                {...register('state')}
+              />
             </Form>
           </AddressContainer>
 

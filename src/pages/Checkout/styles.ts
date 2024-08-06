@@ -60,105 +60,14 @@ export const HeaderSubTitle = styled.p`
 `
 
 export const Form = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  > div:nth-child(1) {
-    width: 12.5rem;
-    flex: none;
-  }
-
-  > div:nth-child(2) {
-    flex: 1;
-  }
-`
-
-export const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-
-`
-
-export const InputContent = styled.div`
-  color: ${(props) => props.theme['gray-700']};
-  background-color: ${(props) => props.theme['gray-300']};
-
-  border: 1px solid ${(props) => props.theme['gray-400']};
-  border-radius: 4px;
-
-  display: flex;
-  align-items: center;
-
-  position: relative;
-  
-  input {
-    background: transparent;
-    border: none;
-
-    width: 100%;
-    padding: 0.75rem;
-  }
-
-  input::placeholder{
-    color: ${(props) => props.theme['gray-600']};
-  }
-
-  input#complement {
-    padding-right: 4.25rem; 
-  }
-
-  span {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    color: ${(props) => props.theme['gray-600']};
-    font-size: 0.875rem;
-    line-height: 130%;
-    font-style: italic;
-    pointer-events: none;
-  }
-`
-
-export const ErrorMessage = styled.p`
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: red;
-
-`
-
-export const AddressTwoCollums = styled.div`
-  display: flex;
-  gap: 0.75rem;
-
-  > div:nth-child(1) {
-    flex: 4;
-  }
-
-  > div:nth-child(2) {
-    flex: 6;
-  }
- 
-`
-
-export const AddressThreeCollums = styled.div`
-  display: flex;
-  gap: 0.75rem;
-
-  > div:nth-child(1) {
-    flex: 4;
-  }
-
-  > div:nth-child(2) {
-    flex: 5;
-  }
-
-  > div:nth-child(3) {
-    flex: 1;
-  }
-  
+  display: grid;
+  grid-template-areas:
+    'cep . .'
+    'street street street'
+    'addressNumber complement complement'
+    'neighborhood city state';
+  grid-template-columns: 200px 1fr 60px;
+  grid-gap: 16px 12px;
 `
 
 export const PaymentContainer = styled(BaseContainer)`
