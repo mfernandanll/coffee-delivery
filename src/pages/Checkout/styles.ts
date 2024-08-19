@@ -148,6 +148,12 @@ export const PaymentOption = styled.button<PaymentOptionProps>`
   }
 `
 
+export const ErrorMessage = styled.p`
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: red;
+`
+
 export const CartContainer = styled(BaseContainer)`
   min-width: 28rem;
   border-radius: 6px 44px;

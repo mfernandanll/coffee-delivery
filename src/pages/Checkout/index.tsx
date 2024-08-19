@@ -11,6 +11,7 @@ import {
   TotalContainer,
   HeaderTitle,
   HeaderSubTitle,
+  ErrorMessage,
 } from "./styles";
 import { useContext } from "react";
 import { ShoppingCartContext } from "../../contexts/ShoppingCartListContext";
