@@ -1,12 +1,6 @@
 import styled from "styled-components"
 import background from "../../assets/background.png"
 
-export const HomeContainer = styled.main`
-    /* display: flex;
-    flex-direction: column; */
-  
-`
-
 export const BannerContainer = styled.section`
   background-image: url(${background}); 
   background-size: cover; 

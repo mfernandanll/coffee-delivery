@@ -1,13 +1,13 @@
 import { Coffee, Package, ShoppingCart, Timer } from "@phosphor-icons/react"
 import banner from "../../assets/bannerImg.png"
-import { BannerContainer, BannerContent, BannerTitle, BenefitsItems, ButtonItem, GridProducts, HomeContainer, Item, ProductsContainer } from "./styles"
+import { BannerContainer, BannerContent, BannerTitle, BenefitsItems, ButtonItem, GridProducts, Item, ProductsContainer } from "./styles"
 import { CardProduct } from "./CardProduct";
 
 import { coffees } from '../../data/coffees.json'
 
 export function Home() {
   return (
-    <HomeContainer>
+    <main>
       <BannerContainer>
         <BannerContent>
 
@@ -61,6 +61,6 @@ export function Home() {
           }
         </GridProducts>
       </ProductsContainer>
-    </HomeContainer>
+    </main>
   )
 }
