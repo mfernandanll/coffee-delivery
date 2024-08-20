@@ -2,7 +2,6 @@ import { CurrencyDollar, MapPin, Timer } from "@phosphor-icons/react";
 import { CheckoutContent, CheckoutDataContainer, CheckoutItem, CheckoutItemData, CheckoutItemIcon, GradientContainer, SuccessContainer } from "./styles";
 import { useParams } from 'react-router-dom'
 
-import successImg from "../../assets/success-img.png";
 import { ShoppingCartContext } from "../../contexts/ShoppingCartListContext";
 import { useContext } from "react";
 
@@ -66,7 +65,7 @@ export function Success() {
         </GradientContainer>
 
 
-        <img src={successImg} alt="Ilustração de um motoboy em uma moto indo entregar uma encomenda que está em uma caixa" />
+        <img src="/images/success-img.png" alt="Ilustração de um motoboy em uma moto indo entregar uma encomenda que está em uma caixa" />
 
       </CheckoutContent>
     </SuccessContainer>

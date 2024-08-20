@@ -1,8 +1,8 @@
 import styled from "styled-components"
-import background from "../../assets/background.png"
+import backgroundImg from "/images/background.png"
 
 export const BannerContainer = styled.section`
-  background-image: url(${background}); 
+  background-image: url(${backgroundImg}); 
   background-size: cover; 
   background-position: center; 
   

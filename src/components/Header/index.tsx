@@ -1,6 +1,5 @@
 import { Location, Aside, Cart, HeaderContainer, HeaderContent } from "./styles";
 
-import logo from "../../assets/logo.png";
 import { MapPin, ShoppingCart } from "@phosphor-icons/react";
 import { useContext } from "react";
 import { ShoppingCartContext } from "../../contexts/ShoppingCartListContext";
@@ -15,7 +14,7 @@ export function Header() {
     <HeaderContainer>
       <HeaderContent>
         <Link to="/">
-          <img src={logo} alt="Logo do coffee delivery" />
+          <img src="/images/logo.png" alt="Logo do coffee delivery" />
         </Link>
 
         <Aside>

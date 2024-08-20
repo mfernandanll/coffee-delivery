@@ -1,5 +1,4 @@
 import { Coffee, Package, ShoppingCart, Timer } from "@phosphor-icons/react"
-import banner from "../../assets/bannerImg.png"
 import { BannerContainer, BannerContent, BannerTitle, BenefitsItems, ButtonItem, GridProducts, Item, ProductsContainer } from "./styles"
 import { CardProduct } from "./CardProduct";
 
@@ -47,7 +46,7 @@ export function Home() {
             </BenefitsItems>
           </BannerTitle>
 
-          <img src={banner} alt="Imagem de copo de café com a logo do coffee delivery" />
+          <img src="/images/bannerImg.png" alt="Imagem de copo de café com a logo do coffee delivery" />
         </BannerContent>
       </BannerContainer>
 
