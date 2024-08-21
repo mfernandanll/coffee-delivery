@@ -59,7 +59,7 @@ Este projeto foi desenvolvido com as seguintes tecnologias:
 
 <h2 id="usage">💡 Utilização</h2>
 
-A aplicação Github Blog está disponível para uso [aqui](https://coffee-delivery-frontend.netlify.app/).
+A aplicação Coffee Delivery está disponível para uso [aqui](https://coffee-delivery-frontend.netlify.app/).
 
 Você também pode executá-la em sua máquina localmente. Certifique-se de ter o ``Node.js`` e o ``npm`` instalados antes de prosseguir com as etapas abaixo:
 
