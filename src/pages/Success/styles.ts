@@ -26,25 +26,29 @@ export const CheckoutContent = styled.div`
   gap: 6.375rem;
 `
 
-export const GradientContainer = styled.div`
-  position: relative;
-  border-radius: 6px 36px;
-  padding: 2px;
-
-  max-height: 17rem;
-
-  background: linear-gradient(135deg, ${(props) => props.theme['yellow-500']}, ${(props) => props.theme['purple-500']});
-`
-
 export const CheckoutDataContainer = styled.div`
   padding: 2.5rem;
+  border-radius: 6px 36px;
+  position: relative;
+  background: ${(props) => props.theme['gray-100']};
 
-  border-radius: 4px 34px;
-  background-color: ${(props) => props.theme['gray-200']};
-
+  width: 32rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px; 
+    z-index: -1; 
+    border-radius: 7px 37px 7px 37px; 
+    background: linear-gradient(
+      102.89deg,
+      #dbac2c 2.61%,
+      #8047f8 98.76%
+    ); 
+  }
 `
 
 export const CheckoutItem = styled.div`
